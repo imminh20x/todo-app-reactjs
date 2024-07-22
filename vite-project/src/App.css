@@ -1,0 +1,24 @@
+/* .todoItem{
+    display: flex;
+    justify-content: space-between;
+}
+
+.todoItem__child{
+    display: flex;
+    gap: 10px;
+}
+
+.task-input, .todoItem{
+    width: 100%;
+    font-size: 20px;
+    padding: 3px 5px;
+    border: 0;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    box-shadow: 0 0 10px 4px rgba(0,0,0, .1);
+}
+
+.container{
+    background-color: #F0F0F0;
+    padding: 30px;
+} */
