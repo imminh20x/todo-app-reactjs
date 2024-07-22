@@ -1,6 +1,6 @@
 const TodoItem = (props) => {
   return (
-    <div className="flex justify-between text-xl p-2 rounded-sm mb-2 w-full cursor-pointer border-0 shadow-custom">
+    <div className="flex justify-between w-full p-2 mb-2 text-xl border-0 rounded-sm cursor-pointer shadow-custom">
       <div className="flex gap-2">
         <input
           type="checkbox"
@@ -13,5 +13,4 @@ const TodoItem = (props) => {
     </div>
   );
 };
-
 export default TodoItem;
