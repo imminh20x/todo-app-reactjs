@@ -1,24 +1,27 @@
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import TodoItem from "./components/TodoItem";
+import { Sidebar } from "./components/Sidebar";
 
 function App() {
+  const inputRef = useRef();
+
   const [todoList, setTodoList] = useState([
     { id: 1, title: "Learn React", isImportant: true, isCompleted: false },
     { id: 2, title: "Learn Vue", isImportant: false, isCompleted: false },
     { id: 3, title: "Learn Angular", isImportant: false, isCompleted: false },
   ]);
 
-  // const todoList = [
-  //   { id: 1, title: "Learn React" },
-  //   { id: 2, title: "Learn Vue" },
-  //   { id: 3, title: "Learn Angular" },
-  // ];
+  const [activeTodoItemId, setActiveTodoItemId] = useState();
 
-  const inputRef = useRef();
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleCompleteCheckbox = (id) => {
+  const activeTodoItem = todoList.find(
+    (todoItem) => todoItem.id === activeTodoItemId
+  );
+
+  const handleCompleteCheckbox = (todoId) => {
     const updatedTodoList = todoList.map((todoItem) => {
-      if (todoItem.id === id) {
+      if (todoItem.id === todoId) {
         return { ...todoItem, isCompleted: !todoItem.isCompleted };
       }
       return todoItem;
@@ -26,17 +29,10 @@ function App() {
     setTodoList(updatedTodoList);
   };
 
-  const todoItem = todoList.map((todoItem) => {
-    return (
-      <TodoItem
-        key={todoItem.id}
-        title={todoItem.title}
-        isImportant={todoItem.isImportant}
-        isCompleted={todoItem.isCompleted}
-        handleCompleteCheckbox={() => handleCompleteCheckbox(todoItem.id)}
-      />
-    );
-  });
+  const handleTodoItemClick = (todoId) => {
+    setShowSidebar(true);
+    setActiveTodoItemId(todoId);
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -48,6 +44,19 @@ function App() {
     }
   };
 
+  const todoItem = todoList.map((todoItem) => {
+    return (
+      <TodoItem
+        key={todoItem.id}
+        title={todoItem.title}
+        isImportant={todoItem.isImportant}
+        isCompleted={todoItem.isCompleted}
+        handleCompleteCheckbox={() => handleCompleteCheckbox(todoItem.id)}
+        handleTodoItemClick={() => handleTodoItemClick(todoItem.id)}
+      />
+    );
+  });
+
   return (
     <div className="bg-white p-7">
       <input
@@ -58,7 +67,8 @@ function App() {
         className="w-full p-1 text-xl border-0 rounded-sm mb-2 shadow-[0,0,2px,2px,rgba(0,0,0,0.1)]"
         onKeyDown={handleKeyDown}
       />
-      {todoItem}
+      <div>{todoItem}</div>
+      {showSidebar && <Sidebar todoItem={activeTodoItem} />}
     </div>
   );
 }
