@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import TodoItem from "./components/TodoItem";
 import Sidebar from "./components/Sidebar";
 import FilterPanel from "./components/FilterPanel";
@@ -75,8 +75,8 @@ function App() {
     }
   };
 
-  const filteredTodos = todoList
-    .filter((todoItem) => {
+  const filteredTodos = useMemo(() => {
+    return todoList.filter((todoItem) => {
       switch (selectedFilterId) {
         case "all":
           return true;
@@ -89,19 +89,8 @@ function App() {
         default:
           return true;
       }
-    })
-    .map((todoItem) => {
-      return (
-        <TodoItem
-          key={todoItem.id}
-          name={todoItem.name}
-          isImportant={todoItem.isImportant}
-          isCompleted={todoItem.isCompleted}
-          handleCompleteCheckbox={() => handleCompleteCheckbox(todoItem.id)}
-          handleTodoItemClick={() => handleTodoItemClick(todoItem.id)}
-        />
-      );
     });
+  }, [todoList, selectedFilterId]);
 
   return (
     <div className="flex">
@@ -120,7 +109,22 @@ function App() {
           onKeyDown={handleKeyDown}
         />
 
-        <div>{filteredTodos}</div>
+        <div>
+          {filteredTodos.map((todoItem) => {
+            return (
+              <TodoItem
+                key={todoItem.id}
+                name={todoItem.name}
+                isImportant={todoItem.isImportant}
+                isCompleted={todoItem.isCompleted}
+                handleCompleteCheckbox={() =>
+                  handleCompleteCheckbox(todoItem.id)
+                }
+                handleTodoItemClick={() => handleTodoItemClick(todoItem.id)}
+              />
+            );
+          })}
+        </div>
 
         {showSidebar && (
           <Sidebar
