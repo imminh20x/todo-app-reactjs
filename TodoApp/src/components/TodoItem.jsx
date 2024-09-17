@@ -9,8 +9,11 @@ const TodoItem = (props) => {
           checked={props.isCompleted}
           type="checkbox"
           onChange={props.handleCompleteCheckbox}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         />
-        <p>{props.title}</p>
+        <p>{props.name}</p>
       </div>
       {props.isImportant && <p>🔥</p>}
     </div>
